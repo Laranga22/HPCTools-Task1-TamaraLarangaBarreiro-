@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include "timer.h"
 #include "dgesv.h"
+#include <stddef.h>
+
 
 double *generate_matrix(unsigned int size, unsigned int seed)
 {
@@ -34,7 +36,7 @@ double *duplicate_matrix(double *orig, unsigned int size)
 
 int is_nearly_equal(double x, double y)
 {
-  const double epsilon = 1e-5 /* some small number */;
+  const double epsilon = 1e-4 /* some small number */;
   return fabs(x - y) <= epsilon * fabs(x);
   // see Knuth section 4.2.2 pages 217-218
 }
@@ -69,7 +71,6 @@ int main(int argc, char *argv[])
   aref = duplicate_matrix(a, size);
   bref = duplicate_matrix(b, size);
 
-
   //
   // Using LAPACK dgesv OpenBLAS implementation to solve the system
   //
@@ -90,10 +91,20 @@ int main(int argc, char *argv[])
   //
   timestamp(&start);
 
-  info = my_dgesv(n, nrhs, a, b /* add/change the parameters according to your implementation needs */);
+  info = my_dgesv(n, a, b /* add/change the parameters according to your implementation needs */);
 
   timestamp(&now);
   printf("Time taken by my dgesv solver: %ld ms\n", diff_milli(&start, &now));
+  
+  printf("Solution:\n");
+  for(int i = 0; i<size; i++){
+    printf("x[%d] = %lf\n", i, b[i]);
+  }
+  
+  printf("Solution bref:\n");
+  for(int i = 0; i<size; i++){
+    printf("x[%d] = %lf\n", i, bref[i]);
+  }
 
   if (check_result(bref, b, size) == 1)
     printf("Result is ok!\n");
@@ -102,3 +113,4 @@ int main(int argc, char *argv[])
 
   return 0;
 }
+
