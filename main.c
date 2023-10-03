@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 
   timestamp(&now);
   printf("Time taken by my dgesv solver: %ld ms\n", diff_milli(&start, &now));
-  
+  /*
   printf("Solution:\n");
   for(int i = 0; i<size; i++){
     printf("x[%d] = %lf\n", i, b[i]);
@@ -105,6 +105,7 @@ int main(int argc, char *argv[])
   for(int i = 0; i<size; i++){
     printf("x[%d] = %lf\n", i, bref[i]);
   }
+  */
 
   if (check_result(bref, b, size) == 1)
     printf("Result is ok!\n");

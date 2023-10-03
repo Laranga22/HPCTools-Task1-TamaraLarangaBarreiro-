@@ -4,7 +4,7 @@
 #include <math.h>
 
 
-float absVal(const double val) {
+double absVal(const double val) {
     if (val < 0) {
         return -val;
     } else {
@@ -14,7 +14,7 @@ float absVal(const double val) {
 
 void rowSwapper(double *matrix, const int row, const int new_row, const int n) {
     for (int i = 0; i < n; i++) {
-        float temp = matrix[row * n + i];
+        double temp = matrix[row * n + i];
         matrix[row * n + i] = matrix[new_row * n + i];
         matrix[new_row * n + i] = temp;
     }
@@ -30,8 +30,8 @@ int gaussElimination(double *matrix, double *aug_matrix, const int n) {
         if (matrix[i * n + i] == 0) {
             int biggest = i;
             for (int j = 0; j < n; j++) {
-                float actual = matrix[j * n + i];
-                float actual_max = matrix[biggest * n + i];
+                double actual = matrix[j * n + i];
+                double actual_max = matrix[biggest * n + i];
                 if (absVal(actual) > absVal(actual_max)) {
                     biggest = j;
                 }
@@ -45,7 +45,7 @@ int gaussElimination(double *matrix, double *aug_matrix, const int n) {
         }
         for (int j = 0; j < n; j++) {
             if (i != j) {
-                float ratio = matrix[j * n + i] / matrix[i * n + i];
+                double ratio = matrix[j * n + i] / matrix[i * n + i];
                 if (ratio != 0) {
                     rowSubstract(matrix, j, i, ratio, n);
                     rowSubstract(aug_matrix, j, i, ratio, n);
