@@ -1,1 +1,0 @@
-int my_dgesv(const int n, double *a, double *b);
