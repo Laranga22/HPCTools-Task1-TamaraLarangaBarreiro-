@@ -34,6 +34,10 @@ double *duplicate_matrix(double *orig, unsigned int size)
   return replica;
 }
 
+void free_matrix(double *matrix){
+  free(matrix);
+}
+
 int is_nearly_equal(double x, double y)
 {
   const double epsilon = 1e-4 /* some small number */;
@@ -112,6 +116,12 @@ int main(int argc, char *argv[])
   else
     printf("Result is wrong!\n");
 
+  free_matrix(a);
+  free_matrix(b);
+  free_matrix(aref);
+  free_matrix(bref);
+  free(ipiv);
+  
   return 0;
 }
 

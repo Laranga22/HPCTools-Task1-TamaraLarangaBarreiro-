@@ -11,7 +11,10 @@ LDLIBS=-lopenblas
 # Just invoke make like this: make CC=icx
 #LDLIBS=-qmkl=sequential -lmkl_intel_lp64
 
+CFLAGS = -g
+
 dgesv: dgesv.o timer.o main.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 clean:
 	$(RM) dgesv *.o *~
