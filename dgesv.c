@@ -13,6 +13,7 @@ double absVal(const double val) {
 }
 
 void rowSwapper(double *matrix, const int row, const int new_row, const int n) {
+    #pragma omp parallel for
     for (int i = 0; i < n; i++) {
         double temp = matrix[row * n + i];
         matrix[row * n + i] = matrix[new_row * n + i];
@@ -21,6 +22,7 @@ void rowSwapper(double *matrix, const int row, const int new_row, const int n) {
 }
 
 void rowSubstract(double *matrix, const int row_result, const int row, const double ratio, const int n) {
+    #pragma ivdep
     for (int i = 0; i < n; i++)
         matrix[row_result * n + i] -= ratio * matrix[row * n + i];
 }
@@ -29,6 +31,7 @@ int gaussElimination(double *matrix, double *aug_matrix, const int n) {
     for (int i = 0; i < n; i++) {
         if (matrix[i * n + i] == 0) {
             int biggest = i;
+            #pragma omp parallel for
             for (int j = 0; j < n; j++) {
                 double actual = matrix[j * n + i];
                 double actual_max = matrix[biggest * n + i];
@@ -43,6 +46,7 @@ int gaussElimination(double *matrix, double *aug_matrix, const int n) {
                 return -1;
             }
         }
+        #pragma omp parallel for
         for (int j = 0; j < n; j++) {
             if (i != j) {
                 double ratio = matrix[j * n + i] / matrix[i * n + i];
@@ -53,6 +57,7 @@ int gaussElimination(double *matrix, double *aug_matrix, const int n) {
             }
         }
     }
+    #pragma omp parallel for collapse(2)
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             aug_matrix[i * n + j] /= matrix[i * n + i];

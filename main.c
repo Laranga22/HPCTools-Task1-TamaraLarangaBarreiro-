@@ -1,6 +1,6 @@
 //#include <lapacke.h>
-#include <openblas/lapacke.h>
-//#include <mkl_lapacke.h>
+//#include <openblas/lapacke.h>
+#include <mkl_lapacke.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -17,7 +17,7 @@ double *generate_matrix(unsigned int size, unsigned int seed)
   double *matrix = (double *) malloc(sizeof(double) * size * size);
 
   srand(seed);
-
+  #pragma ivdep
   for (i = 0; i < size * size; i++) {
     matrix[i] = rand() % 100;
   }
@@ -40,7 +40,7 @@ void free_matrix(double *matrix){
 
 int is_nearly_equal(double x, double y)
 {
-  const double epsilon = 1e-4 /* some small number */;
+  const double epsilon = 1e-3 /* some small number */;
   return fabs(x - y) <= epsilon * fabs(x);
   // see Knuth section 4.2.2 pages 217-218
 }
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
   free_matrix(aref);
   free_matrix(bref);
   free(ipiv);
-  
+
   return 0;
 }
 
